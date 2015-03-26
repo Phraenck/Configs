@@ -1,0 +1,70 @@
+#!/bin/bash
+
+#Workspaces
+Workspacenum() {
+    WORKSPACE=$(bspc query -d -D)
+    echo "$WORKSPACE/9"
+}
+
+function B {
+    echo "%{B#$2}$1%{B-}"
+}
+
+function F {
+	echo "%{F#$2}$1%{F-}"
+}
+DIMFORE=15374F
+FORE=8BA3B2
+WHITE=FFFFFF
+BLACK=202020
+GRAY=404040
+
+Temperature() {
+    TEMPERATURE=$(sensors coretemp-isa-0000 | awk '/Physical/ { print $4 }')
+    echo "$(F 'TEMP: ' $FORE)$TEMPERATURE"
+}
+
+desktops() {
+    for i in 1 2 3 4 5 6 7 8 9 0
+    do
+		if [[ $i -eq "$(bspc query -D -d)" ]]; then
+            printf '%s' "%{A:$i:}$(B " $(F $i $FORE) " $DIMFORE)$(F "%{U#ff404040}%{+u}" $GRAY)$(F '%{U-}%{-u}' $GRAY)%{A}"
+		elif [[ -n "$(bspc query -W -d ^$i)" ]]; then
+            printf ' %s ' "%{A:$i:}$(F "%{U#ff404040}%{+u}" $GRAY)$(F $i $FORE)$(F '%{U-}%{-u}' $GRAY)%{A}"
+		else
+            printf ' %s ' "%{A:$i:}$(F '' $GRAY)$(F $i $DIMFORE)$(F '' $FORE)%{A}"
+		fi
+	done
+}
+
+# Define the clock
+ Clock() {
+    DATE=$(date "+%Y-%m-%d %H%M")
+    echo "%{F#$FORE}$DATE%{F-}"
+}
+
+#Define the battery
+Battery() {
+    BATPERC=$(acpi --battery | cut -d, -f2)
+    BATPERC=$(F ${BATPERC::(-1)} $WHITE)
+    BATSTR=$(F 'BATT:' $FORE)
+    printf '%s %s' $BATSTR $BATPERC
+}
+
+Ram() {
+    RAM=$(/usr/libexec/i3blocks/memory)
+    SWAP=$(/usr/libexec/i3blocks/swap)
+    echo "$(F 'RAM: ' $FORE)$(F $RAM $WHITE)$(F '  SWAP: ' $FORE)$(F $SWAP $WHITE)"
+}
+
+Volume() {
+    VOL=$(/usr/libexec/i3blocks/volume)
+    echo "$(F 'VOL: ' $FORE)$(F ${VOL::(-1)} $WHITE)"
+}
+
+while true; do
+
+    echo "%{l}$(desktops)%{F-}%{c}$(Clock)%{r}$(Battery)  $(Volume)%  $(Temperature)  $(Ram)"
+    
+    sleep 0.5;
+done

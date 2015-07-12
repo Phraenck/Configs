@@ -106,6 +106,8 @@ GetIME() {
         IME="EN"
     elif [[ $IME == "hangul" ]]; then
         IME="KR"
+    else
+        IME="??"
     fi
 
     echo -e "$(F '\uF11C ' 'FF66CC')$(F $IME $WHITE)"

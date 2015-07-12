@@ -1,6 +1,6 @@
 #!/bin/bash
 #config script for bar
-#latest update 2015-07-11 2321
+#latest update 2015-07-12 0010
 
 function B {
     echo "%{B#$2}$1%{B-}"
@@ -99,6 +99,18 @@ Desktops() {
 	done
 }
 
+#Get current ime
+GetIME() {
+    IME=$(ibus engine)
+    if [[ $IME == "xkb:us::eng" ]]; then
+        IME="EN"
+    elif [[ $IME == "hangul" ]]; then
+        IME="KR"
+    fi
+
+    echo -e "$(F '\uF11C ' 'FF66CC')$(F $IME $WHITE)"
+}
+
 #Display how much ram is available
 Ram() {
     RAM=$(/usr/libexec/i3blocks/memory)
@@ -118,8 +130,9 @@ Volume() {
     echo -e "$(F '\uF028 ' '05AAFF')$(F $VOL $WHITE)"
 }
 
+
 #=======================MAIN DRIVER=======================
 while true; do
-    echo "%{l}%{F-}$(Clock)%{c}$(Desktops)%{r}$(Battery)  $(Volume)  $(Backlight)  $(Temperature)  $(Ram) " &
+    echo "%{l}%{F-}$(Clock)%{c}$(Desktops)%{r}$(Battery)  $(Volume)  $(Backlight)  $(Temperature)  $(Ram)  $(GetIME) " &
     sleep 0.5; 
 done

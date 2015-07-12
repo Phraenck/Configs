@@ -17,14 +17,16 @@ bspc config gapless_monocle     true
 bspc config focus_by_distance   true
 bspc config focus_follows_pointer true
 
-bspc monitor -d i ii iii iv v vi vii viii ix x 
+#bspc monitor -d i ii iii iv v vi vii viii ix x 
+bspc monitor -d 일 이 삼 사 오 육 칠 팔 구 십
 
 amixer -D pulse sset Master 70%
 kbdFade in
 numlockx on
 
 compton -cC --config=.config/compton.conf &
-feh --bg-fill ~/Pictures/Wallpapers/mtfuji.jpg
+feh --bg-fill ~/Pictures/Wallpapers/설악산.jpg
 
 #source ~/.config/bar/barrc | bar -p -B "#BB2C3B4E" &
-source ~/.config/bar/barrc | bar -f "-misc-dejavu sans mono-bold-r-normal--11-*-*-*-m-*-iso10646-1,-misc-fontawesome-medium-r-normal--0-0-0-0-p-0-iso10646-1" -p -B "#DD2C3B4E" | sh &
+source ~/.config/bar/barrc | bar -f "-misc-dejavu sans mono-bold-r-normal--11-*-*-*-m-*-iso10646-1,-misc-jejumyeongjo-medium-r-normal--14-*-*-*-p-*-iso10646-1
+,-misc-fontawesome-medium-r-normal--0-0-0-0-p-0-iso10646-1" -p -B "#DD2C3B4E" | sh &

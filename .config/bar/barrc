@@ -24,34 +24,34 @@ GRAY=404040
 
 function romanToArabic {
     case $1 in
-        i)
+        일)
             echo 1
             ;;
-        ii)
+        이)
             echo 2
             ;;
-        iii)
+        삼)
             echo 3
             ;;
-        iv)
+        사)
             echo 4
             ;;
-        v)
+        오)
             echo 5
             ;;
-        vi)
+        육)
             echo 6
             ;;
-        vii)
+        칠)
             echo 7
             ;;
-        viii)
+        팔)
             echo 8
             ;;
-        ix)
+        구)
             echo 9
             ;;
-        x)
+        십 )
             echo 10
             ;;
     esac
@@ -83,9 +83,9 @@ Battery() {
 #Display active desktop and highlight desktops in use
 Desktops() {
     printf "\uF31B"
-    for i in i ii iii iv v vi vii viii ix x 
+    for i in 일 이 삼 사 오 육 칠 팔 구 십 
     do
-        if [ $i != i ]; then
+        if [ $i != 일 ]; then
             printf '|'
         fi
 

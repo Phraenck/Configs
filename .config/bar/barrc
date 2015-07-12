@@ -1,4 +1,6 @@
 #!/bin/bash
+#config script for bar
+#latest update 2015-07-11 2321
 
 function B {
     echo "%{B#$2}$1%{B-}"

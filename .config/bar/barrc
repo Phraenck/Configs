@@ -90,11 +90,11 @@ Desktops() {
         fi
 
 		if [[ $i == "$(bspc query -D -d)" ]]; then
-            printf '%s' "%{A:$i:}$(B " $(F $i $FORE) " $DIMFORE)$(F "%{U#ff404040}%{+u}" $GRAY)$(F '%{U-}%{-u}' $GRAY)%{A}"
+            printf '%s' "$(B " $(F $i $FORE) " $DIMFORE)$(F "%{U#ff404040}%{+u}" $GRAY)$(F '%{U-}%{-u}' $GRAY)"
         elif [[ -n "$(bspc query -W -d ^$(romanToArabic $i))" ]]; then
-            printf ' %s ' "%{A:$i:}$(F "%{U#ff404040}%{+u}" $GRAY)$(F $i $FORE)$(F '%{U-}%{-u}' $GRAY)%{A}"
+            printf ' %s ' "$(F "%{U#ff404040}%{+u}" $GRAY)$(F $i $FORE)$(F '%{U-}%{-u}' $GRAY)"
 		else
-            printf ' %s ' "%{A:$i:}$(F '' $GRAY)$(F $i $DIMFORE)$(F '' $FORE)%{A}"
+            printf ' %s ' "$(F '' $GRAY)$(F $i $DIMFORE)$(F '' $FORE)"
 		fi
 	done
 }
@@ -129,7 +129,7 @@ Temperature() {
 #Display current volume
 Volume() {
     VOL=$(/usr/libexec/i3blocks/volume | cut -d% -f1)
-    echo -e "$(F '\uF028 ' '05AAFF')$(F $VOL $WHITE)"
+    echo -e "%{A:amixer -D pulse sset Master toggle:}$(F '\uF028 ' '05AAFF')%{A}%{A:amixer -D pulse sset Master 10%-:}-%{A} $(F $VOL $WHITE) %{A:amixer -D pulse sset Master 10%+:}+%{A}"
 }
 
 

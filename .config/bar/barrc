@@ -1,11 +1,5 @@
 #!/bin/bash
 
-#Workspaces
-Workspacenum() {
-    WORKSPACE=$(bspc query -d -D)
-    echo "$WORKSPACE/9"
-}
-
 function B {
     echo "%{B#$2}$1%{B-}"
 }
@@ -13,23 +7,89 @@ function B {
 function F {
 	echo "%{F#$2}$1%{F-}"
 }
-DIMFORE=15374F
-FORE=8BA3B2
-WHITE=FFFFFF
+
+#Background for time box, selected workspace box, and other
+#workspace text
+DIMFORE=788BA9
+
+#Used for selected workspace text and status labels
+FORE=E6E6E6
+
+RED=FF0000
+WHITE=EDD3DC
 BLACK=202020
 GRAY=404040
 
-Temperature() {
-    TEMPERATURE=$(sensors coretemp-isa-0000 | awk '/Physical/ { print $4 }')
-    echo "$(F 'TEMP: ' $FORE)$TEMPERATURE"
+function romanToArabic {
+    case $1 in
+        i)
+            echo 1
+            ;;
+        ii)
+            echo 2
+            ;;
+        iii)
+            echo 3
+            ;;
+        iv)
+            echo 4
+            ;;
+        v)
+            echo 5
+            ;;
+        vi)
+            echo 6
+            ;;
+        vii)
+            echo 7
+            ;;
+        viii)
+            echo 8
+            ;;
+        ix)
+            echo 9
+            ;;
+        x)
+            echo 10
+            ;;
+    esac
 }
 
-desktops() {
-    for i in 1 2 3 4 5 6 7 8 9 0
+#Get screen brightness
+Backlight() {
+    BACK=$(xbacklight -get | cut -d. -f1)
+    echo -e "$(F '\uF0EB ' '00FF85')$(F $BACK $WHITE)"
+}
+
+#Percentage battery remaining
+Battery() {
+    BATPERC=$(acpi --battery | cut -d, -f2 | sed 's/.$//' | tr -d '\n') 
+    BATPERC_F=$(F $BATPERC $WHITE)
+    BATSTR=$(F '\uF0E7' 'CCFF00')
+    _20=20
+
+    #printf '%s %s' $BATSTR $BATPERC_F
+    echo -e $BATSTR $BATPERC_F
+}
+
+#Clock in YMD HHMM format
+ Clock() {
+    DATE=$(date "+%Y-%m-%d %H%M")
+    echo "%{B#$DIMFORE} $DATE  %{B-}"
+}
+
+#Display active desktop and highlight desktops in use
+Desktops() {
+    printf "\uF31B"
+    for i in i ii iii iv v vi vii viii ix x 
     do
-		if [[ $i -eq "$(bspc query -D -d)" ]]; then
+        if [ $i != i ]; then
+            printf '|'
+        fi
+
+		if [[ $i == "$(bspc query -D -d)" ]]; then
             printf '%s' "%{A:$i:}$(B " $(F $i $FORE) " $DIMFORE)$(F "%{U#ff404040}%{+u}" $GRAY)$(F '%{U-}%{-u}' $GRAY)%{A}"
-		elif [[ -n "$(bspc query -W -d ^$i)" ]]; then
+        elif [[ -n "$(bspc query -W -d ^$(romanToArabic $i))" ]]; then
             printf ' %s ' "%{A:$i:}$(F "%{U#ff404040}%{+u}" $GRAY)$(F $i $FORE)$(F '%{U-}%{-u}' $GRAY)%{A}"
 		else
             printf ' %s ' "%{A:$i:}$(F '' $GRAY)$(F $i $DIMFORE)$(F '' $FORE)%{A}"
@@ -37,34 +97,27 @@ desktops() {
 	done
 }
 
-# Define the clock
- Clock() {
-    DATE=$(date "+%Y-%m-%d %H%M")
-    echo "%{F#$FORE}$DATE%{F-}"
-}
-
-#Define the battery
-Battery() {
-    BATPERC=$(acpi --battery | cut -d, -f2)
-    BATPERC=$(F ${BATPERC::(-1)} $WHITE)
-    BATSTR=$(F 'BATT:' $FORE)
-    printf '%s %s' $BATSTR $BATPERC
-}
-
+#Display how much ram is available
 Ram() {
     RAM=$(/usr/libexec/i3blocks/memory)
     SWAP=$(/usr/libexec/i3blocks/swap)
-    echo "$(F 'RAM: ' $FORE)$(F $RAM $WHITE)$(F '  SWAP: ' $FORE)$(F $SWAP $WHITE)"
+    echo -e "$(F '\uF0AE ' '8500FF')$(F $RAM $WHITE)$(F '  \uF0A0 ' 'FF8500')$(F $SWAP $WHITE)"
 }
 
+#Display PC temperature in Celcius
+Temperature() {
+    TEMPERATURE=$(sensors coretemp-isa-0000 | awk '/Physical/ { print $4 }')
+    echo -e "$(F '\uF06D ' 'DD0000')$(F $TEMPERATURE $WHITE)"
+}
+
+#Display current volume
 Volume() {
-    VOL=$(/usr/libexec/i3blocks/volume)
-    echo "$(F 'VOL: ' $FORE)$(F ${VOL::(-1)} $WHITE)"
+    VOL=$(/usr/libexec/i3blocks/volume | cut -d% -f1)
+    echo -e "$(F '\uF028 ' '05AAFF')$(F $VOL $WHITE)"
 }
 
+#=======================MAIN DRIVER=======================
 while true; do
-
-    echo "%{l}$(desktops)%{F-}%{c}$(Clock)%{r}$(Battery)  $(Volume)%  $(Temperature)  $(Ram)"
-    
-    sleep 0.5;
+    echo "%{l}%{F-}$(Clock)%{c}$(Desktops)%{r}$(Battery)  $(Volume)  $(Backlight)  $(Temperature)  $(Ram) " &
+    sleep 0.5; 
 done

@@ -5,6 +5,7 @@ export ZSH=/home/frank-antergos/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
+# agnoster2- a modification of agnoster using cyan instead of yellow
 ZSH_THEME="agnoster2"
 
 # Uncomment the following line to use case-sensitive completion.

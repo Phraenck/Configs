@@ -28,5 +28,6 @@ compton -cC --config=.config/compton.conf &
 feh --bg-fill ~/Pictures/Wallpapers/설악산.jpg
 
 #source ~/.config/bar/barrc | bar -p -B "#BB2C3B4E" &
-source ~/.config/bar/barrc | bar -f "-misc-dejavu sans mono-bold-r-normal--11-*-*-*-m-*-iso10646-1,-misc-jejumyeongjo-medium-r-normal--14-*-*-*-p-*-iso10646-1
-,-misc-fontawesome-medium-r-normal--0-0-0-0-p-0-iso10646-1" -p -B "#DD2C3B4E" | sh &
+source ~/.config/bar/barrc | lemonbar -f "-misc-oxygen mono-medium-r-normal--11-*-*-*-p-*-iso10646-1" -f "-misc-seoulnamsan b-medium-r-normal--14-*-*-*-p-*-iso10646-1" -f "-misc-fontawesome-medium-r-normal--0-0-0-0-p-0-iso10646-1" -p -B "#DD2C3B4E" | sh &
+#source ~/.config/bar/barrc | lemonbar -f "Seoul Namsan-11:Regular" -f "FontAwesome-11:Regular" -p -B "#DD2C3B4E" | sh &
+#source ~/.config/bar/barrc | lemonbar -f "-misc-seoulnamsan b-medium-r-normal--14-*-*-*-p-*-iso10646-1" -f "-misc-fontawesome-medium-r-normal--0-0-0-0-p-0-iso10646-1" -p -B "#DD2C3B4E" | sh &

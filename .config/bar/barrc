@@ -1,14 +1,6 @@
 #!/bin/bash
 #config script for bar
-#latest update 2015-07-12 0010
-
-function B {
-    echo "%{B#$2}$1%{B-}"
-}
-
-function F {
-	echo "%{F#$2}$1%{F-}"
-}
+#latest update 2015-07-13 2030
 
 #Background for time box, selected workspace box, and other
 #workspace text
@@ -22,7 +14,19 @@ WHITE=EDD3DC
 BLACK=202020
 GRAY=404040
 
-function romanToArabic {
+#Do background
+function B {
+    echo "%{B#$2}$1%{B-}"
+}
+
+#Do foreground
+function F {
+	echo "%{F#$2}$1%{F-}"
+}
+
+#Convert hangul number to arabic
+#There is probably a better way of doing this...
+function HangulToArabic {
     case $1 in
         일)
             echo 1
@@ -63,6 +67,12 @@ Backlight() {
     echo -e "$(F '\uF0EB ' '00FF85')$(F $BACK $WHITE)"
 }
 
+#Echo buttons
+#Currently just lock
+Buttons() {
+    echo -e "%{A:slimlock:}$(B ' '$(F '\uF023' '2C3B4E')' ' $DIMFORE)%{A}"
+}
+
 #Percentage battery remaining
 Battery() {
     BATPERC=$(acpi --battery | cut -d, -f2 | sed 's/.$//' | tr -d '\n') 
@@ -76,7 +86,7 @@ Battery() {
 
 #Clock in YMD HHMM format
  Clock() {
-    DATE=$(date "+%Y-%m-%d %H%M")
+    DATE=$(date "+%Y년 %m월 %d일 %H%M")
     echo "%{B#$DIMFORE} $DATE  %{B-}"
 }
 
@@ -91,7 +101,7 @@ Desktops() {
 
 		if [[ $i == "$(bspc query -D -d)" ]]; then
             printf '%s' "$(B " $(F $i $FORE) " $DIMFORE)$(F "%{U#ff404040}%{+u}" $GRAY)$(F '%{U-}%{-u}' $GRAY)"
-        elif [[ -n "$(bspc query -W -d ^$(romanToArabic $i))" ]]; then
+        elif [[ -n "$(bspc query -W -d ^$(HangulToArabic $i))" ]]; then
             printf ' %s ' "$(F "%{U#ff404040}%{+u}" $GRAY)$(F $i $FORE)$(F '%{U-}%{-u}' $GRAY)"
 		else
             printf ' %s ' "$(F '' $GRAY)$(F $i $DIMFORE)$(F '' $FORE)"
@@ -99,25 +109,28 @@ Desktops() {
 	done
 }
 
-#Get current ime
-GetIME() {
+#Get current ime and toggle en and kr
+IME() {
     IME=$(ibus engine)
+    NOT_IME="hangul"
     if [[ $IME == "xkb:us::eng" ]]; then
         IME="EN"
+        NOT_IME="hangul"
     elif [[ $IME == "hangul" ]]; then
         IME="KR"
+        NOT_IME="xkb\:us\:\:eng"
     else
         IME="??"
+        NOT_IME="xkb\:us\:\:eng"
     fi
 
-    echo -e "$(F '\uF11C ' 'FF66CC')$(F $IME $WHITE)"
+    echo -e "%{A:ibus engine $NOT_IME:}$(F '\uF11C ' 'FF66CC')$(F $IME $WHITE)%{A}"
 }
 
 #Display how much ram is available
 Ram() {
     RAM=$(/usr/libexec/i3blocks/memory)
-    SWAP=$(/usr/libexec/i3blocks/swap)
-    echo -e "$(F '\uF0AE ' '8500FF')$(F $RAM $WHITE)$(F '  \uF0A0 ' 'FF8500')$(F $SWAP $WHITE)"
+    echo -e "$(F '\uF0AE ' '8500FF')$(F $RAM $WHITE)"
 }
 
 #Display PC temperature in Celcius
@@ -135,6 +148,6 @@ Volume() {
 
 #=======================MAIN DRIVER=======================
 while true; do
-    echo "%{l}%{F-}$(Clock)%{c}$(Desktops)%{r}$(Battery)  $(Volume)  $(Backlight)  $(Temperature)  $(Ram)  $(GetIME) " &
+    echo "%{l}%{F-}$(Clock)%{c}$(Desktops)%{r}$(Battery)  $(Volume)  $(Backlight)  $(Temperature)  $(Ram)  $(IME)  $(Buttons)" &
     sleep 0.5; 
 done

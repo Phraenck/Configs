@@ -95,6 +95,9 @@ super + shift + {minus, equal}
 alt + F1
     slimlock 
 
+alt + s
+    steam
+
 super + Return
     gnome-terminal
 
@@ -105,7 +108,7 @@ alt + {_,shift + } g
     google-chrome-unstable {_,--incognito}
 
 alt + {_,shift + } t
-    nemo {~,~/Desktop}
+    nautilus --no-desktop {~,~/Desktop}
 
 alt + shift + O
     killall Origin.exe

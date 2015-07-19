@@ -2,10 +2,6 @@
 #config script for bar
 #latest update 2015-07-13 2030
 
-#Background for time box, selected workspace box, and other
-#workspace text
-DIMFORE=788BA9
-
 #Used for selected workspace text and status labels
 FORE=E6E6E6
 
@@ -70,7 +66,7 @@ Backlight() {
 #Echo buttons
 #Currently just lock
 Buttons() {
-    echo -e "%{A:slimlock:}$(B ' '$(F '\uF023' '2C3B4E')' ' $DIMFORE)%{A}"
+    echo -e "%{A:slimlock:}$(B ' '$(F '\uF023' '2C3B4E')' ' $BAR_DIM_FORE)%{A}"
 }
 
 #Percentage battery remaining
@@ -87,7 +83,7 @@ Battery() {
 #Clock in YMD HHMM format
  Clock() {
     DATE=$(date "+%Y년 %m월 %d일 %H%M")
-    echo "%{B#$DIMFORE} $DATE  %{B-}"
+    echo "%{B#$BAR_DIM_FORE} $DATE  %{B-}"
 }
 
 #Display active desktop and highlight desktops in use
@@ -100,11 +96,11 @@ Desktops() {
         fi
 
 		if [[ $i == "$(bspc query -D -d)" ]]; then
-            printf '%s' "$(B " $(F $i $FORE) " $DIMFORE)$(F "%{U#ff404040}%{+u}" $GRAY)$(F '%{U-}%{-u}' $GRAY)"
+            printf '%s' "$(B " $(F $i $FORE) " $BAR_DIM_FORE)$(F "%{U#ff404040}%{+u}" $GRAY)$(F '%{U-}%{-u}' $GRAY)"
         elif [[ -n "$(bspc query -W -d ^$(HangulToArabic $i))" ]]; then
             printf ' %s ' "$(F "%{U#ff404040}%{+u}" $GRAY)$(F $i $FORE)$(F '%{U-}%{-u}' $GRAY)"
 		else
-            printf ' %s ' "$(F '' $GRAY)$(F $i $DIMFORE)$(F '' $FORE)"
+            printf ' %s ' "$(F '' $GRAY)$(F $i $BAR_DIM_FORE)$(F '' $FORE)"
 		fi
 	done
 }

@@ -8,8 +8,8 @@ bspc config top_padding        20
 bspc config border_width       3 
 bspc config window_gap         5 
 
-bspc config normal_border_color "#EDD3DC"
-bspc config focused_border_color "#586B89"
+bspc config normal_border_color "#$BACKCOLOR"
+bspc config focused_border_color "#$BACKCOLOR"
 
 bspc config split_ratio         0.5
 bspc config borderless_monocle  true 
@@ -28,6 +28,6 @@ compton -cC --config=.config/compton.conf &
 feh --bg-fill ~/Pictures/Wallpapers/설악산.jpg
 
 #source ~/.config/bar/barrc | bar -p -B "#BB2C3B4E" &
-source ~/.config/bar/barrc | lemonbar -f "-misc-oxygen mono-medium-r-normal--11-*-*-*-p-*-iso10646-1" -f "-misc-seoulnamsan b-medium-r-normal--14-*-*-*-p-*-iso10646-1" -f "-misc-fontawesome-medium-r-normal--0-0-0-0-p-0-iso10646-1" -p -B "#DD2C3B4E" | sh &
+source ~/.config/bar/barrc | lemonbar -f "-misc-oxygen mono-medium-r-normal--11-*-*-*-p-*-iso10646-1" -f "-misc-seoulnamsan b-medium-r-normal--14-*-*-*-p-*-iso10646-1" -f "-misc-fontawesome-medium-r-normal--0-0-0-0-p-0-iso10646-1" -p -B "#DD$BACKCOLOR" | sh &
 #source ~/.config/bar/barrc | lemonbar -f "Seoul Namsan-11:Regular" -f "FontAwesome-11:Regular" -p -B "#DD2C3B4E" | sh &
 #source ~/.config/bar/barrc | lemonbar -f "-misc-seoulnamsan b-medium-r-normal--14-*-*-*-p-*-iso10646-1" -f "-misc-fontawesome-medium-r-normal--0-0-0-0-p-0-iso10646-1" -p -B "#DD2C3B4E" | sh &

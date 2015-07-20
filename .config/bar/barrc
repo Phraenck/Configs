@@ -106,6 +106,7 @@ Desktops() {
 }
 
 #Get current ime and toggle en and kr
+#Also display qwerty or dvorak and provide a toggle
 IME() {
     IME=$(ibus engine)
     NOT_IME="hangul"
@@ -120,7 +121,17 @@ IME() {
         NOT_IME="xkb\:us\:\:eng"
     fi
 
-    echo -e "%{A:ibus engine $NOT_IME:}$(F '\uF11C ' 'FF66CC')$(F $IME $WHITE)%{A}"
+    LAYOUT=$(xkb-switch)
+    OTHERLAYOUT="US"
+    if [[ $LAYOUT == "us" ]]; then
+        LAYOUT="US"
+        OTHERLAYOUT="dvorak"
+    else
+        LAYOUT="DV"
+        OTHERLAYOUT="us"
+    fi
+
+    echo -e "%{A:ibus engine $NOT_IME:}$(F '\uF11C ' 'FF66CC')$(F $IME $WHITE)%{A}  %{A:setxkbmap $OTHERLAYOUT:}$(F $LAYOUT $WHITE)%{A}"
 }
 
 #Display how much ram is available

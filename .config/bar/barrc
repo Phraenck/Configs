@@ -122,13 +122,17 @@ IME() {
     fi
 
     LAYOUT=$(xkb-switch)
-    OTHERLAYOUT="US"
-    if [[ $LAYOUT == "us" ]]; then
-        LAYOUT="US"
-        OTHERLAYOUT="dvorak"
+    if [[ $IME != "KR" ]]; then
+        OTHERLAYOUT="US"
+        if [[ $LAYOUT == "us" ]]; then
+            LAYOUT="QWERTY"
+            OTHERLAYOUT="dvorak"
+        else
+            LAYOUT="DVORAK"
+            OTHERLAYOUT="us"
+        fi
     else
-        LAYOUT="DV"
-        OTHERLAYOUT="us"
+        LAYOUT="HANGUL"
     fi
 
     echo -e "%{A:ibus engine $NOT_IME:}$(F '\uF11C ' 'FF66CC')$(F $IME $WHITE)%{A}  %{A:setxkbmap $OTHERLAYOUT:}$(F $LAYOUT $WHITE)%{A}"

@@ -1,6 +1,5 @@
 #!/bin/bash
 #config script for bar
-#latest update 2015-07-13 2030
 
 #Used for selected workspace text and status labels
 FORE=E6E6E6
@@ -135,7 +134,7 @@ IME() {
         LAYOUT="HANGUL"
     fi
 
-    echo -e "%{A:ibus engine $NOT_IME:}$(F '\uF11C ' 'FF66CC')$(F $IME $WHITE)%{A}  %{A:setxkbmap $OTHERLAYOUT:}$(F $LAYOUT $WHITE)%{A}"
+    echo -e "%{A:ibus engine $NOT_IME:}$(F '\uF11C ' 'FF66CC')$(F $IME $WHITE)%{A} %{A:setxkbmap $OTHERLAYOUT:}$(F $LAYOUT $WHITE)%{A}"
 }
 
 #Display how much ram is available
